@@ -22,6 +22,14 @@ def get_customers():
     })
 
 
+@app.route('/customer/<int:customer_id>', methods=['GET'])
+def get_customer_by_id(customer_id):
+    customer = models.Customer.query.filter_by(customer_id=customer_id).first()
+    return jsonify({
+        "customer": customer.serialize
+    })
+
+
 @app.route('/order', methods=['POST'])
 def create_order():
     params = request.get_json()
@@ -44,4 +52,12 @@ def get_orders():
     orders = models.Order.query.all()
     return jsonify({
         "orders": [order.serialize for order in orders]
+    })
+
+
+@app.route('/order/<int:order_id>', methods=['GET'])
+def get_order_by_id(order_id):
+    order = models.Order.query.filter_by(order_id=order_id).first()
+    return jsonify({
+        "order": order.serialize
     })
